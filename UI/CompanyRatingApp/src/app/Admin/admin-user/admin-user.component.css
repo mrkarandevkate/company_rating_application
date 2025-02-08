@@ -1,0 +1,41 @@
+.table-container {
+    position: relative;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+thead {
+    position: sticky;
+    /* This keeps the table header fixed */
+    top: 10%;
+    background-color: #fff;
+    /* Optional: background color to distinguish header */
+    z-index: 1;
+    /* To ensure the header stays on top */
+}
+
+th,
+td {
+    text-align: center;
+    padding: 8px;
+}
+
+button {
+    width: 120px;
+    margin-top: 5px;
+}

@@ -1,0 +1,12 @@
+/* Reduce the width of the description column */
+
+
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+}
+
+
+/* Created At */

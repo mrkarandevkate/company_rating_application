@@ -1,0 +1,50 @@
+.home {
+    margin-top: 0;
+    /* Same as navbar height */
+
+    padding-top: 2px;
+    /* Optional: Adds spacing between navbar and content */
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 70px;
+}
+
+.navbar-nav .nav-item {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-item a {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item:hover a {
+    color: #62fb40 !important;
+}
+
+.navbar-nav .nav-item.active a {
+    color: #62fb40 !important;
+    font-weight: bold;
+}
+
+footer {
+
+    color: #000000 !important;
+}
+
+footer a {
+    color: #040000 !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #A8E10C;
+}

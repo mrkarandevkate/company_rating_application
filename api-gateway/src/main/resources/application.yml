@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: USER
+          uri: lb://USER
+          predicates:
+            - Path=/user/**,/admin/**
+        - id: RATING
+          uri: lb://RATING
+          predicates:
+            - Path=/rating/**
+        - id: COMPANY
+          uri: lb://COMPANY
+          predicates:
+            - Path=/company/**

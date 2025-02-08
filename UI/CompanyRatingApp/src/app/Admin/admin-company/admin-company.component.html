@@ -1,0 +1,75 @@
+<div class="table-container">
+    <button class="btn btn-primary mb-3" (click)="isAddingCompany = true; isUpdatingCompany = false; resetForm();">
+        Add Company
+    </button>
+
+    <div *ngIf="isAddingCompany" class="card p-3 mb-3">
+        <h5>{{ isUpdatingCompany ? 'Update Company' : 'Add Company' }}</h5>
+        <form (submit)="isUpdatingCompany ? updateCompany() : addCompany()">
+            <div class="mb-2" *ngIf="isUpdatingCompany">
+                <label class="form-label">Company Id</label>
+                <input type="text" class="form-control" [(ngModel)]="newCompany.companyId" name="companyId" readonly>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newCompany.companyName" name="companyName"
+                    required>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Industry</label>
+                <input type="text" class="form-control" [(ngModel)]="newCompany.industry" name="industry" required>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" [(ngModel)]="newCompany.description" name="description" required
+                    maxlength="255"></textarea>
+                <small *ngIf="newCompany.description && newCompany.description.length > 255" class="text-danger">
+                    Description should not exceed 255 characters.
+                </small>
+
+            </div>
+
+
+            <!-- Show Save or Update Button based on isUpdatingCompany -->
+            <button *ngIf="!isUpdatingCompany" type="submit" class="btn btn-success">Save</button>
+            <button *ngIf="isUpdatingCompany" type="submit" class="btn btn-warning">Update</button>
+            <button type="button" class="btn btn-danger ms-2" (click)="isAddingCompany = false">Cancel</button>
+        </form>
+    </div>
+
+    <div *ngIf="loading" class="loading-overlay">
+        <div class="spinner-border text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Company Name</th>
+                <th>Industry</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let company of company; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ company.companyName }}</td>
+                <td>{{ company.industry }}</td>
+                <td>{{ company.description }}</td>
+                <td>{{ company.createdAt }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2" (click)="editCompany(company)">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteCompany(company.companyId)">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

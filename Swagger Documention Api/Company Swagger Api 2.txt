@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Company Service 
+  description: This is the API documentation for the Company service from the Rating Service project, which is part of a microservice architecture for ratings.
+  version: 1.0.0 
+  
+paths:
+  /addcompany:
+    post:
+      description: "Add Company details"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCompanyRequest'
+      responses:
+        '201':
+          description: "Company created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/companyIdResponse'
+                    
+  /updatecompany:
+    put:
+      description: "Update Company details"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/companyUpdateRequest"
+      responses:
+        '200':
+          description: "Company updated Successfully"
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/companyIdResponse'
+                
+  /getallcompany:
+    get:
+      description: "Get all company details"
+      responses:
+        '200':
+          description: "Get all company details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/companyList"
+                
+  /company/{companyId}:
+    get:
+      description: "Get Company detail by Company id"
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          description: "The ID of the Company to retrieve"
+          schema:
+            type: 
+              integer
+      responses:
+        '200':
+          description: "Get Company detail by Company id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/company"
+     
+  /deletecompany/{companyId}:
+    delete:
+      description: "Delete a Company from the system by companyId"
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          description: "The ID of the Company to delete"
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "Company deleted successfully"
+          
+components:
+  schemas:
+    companyIdResponse:
+      type: object
+      properties:
+        companyId:
+          type: integer
+
+    companyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/company"
+    
+    company:
+      type: object
+      properties:
+        companyId:
+          type: integer
+        companyName:
+          type: string
+        industry:
+          type: string
+        description:
+          type: string
+        created_At:
+          format: Date
+        imagePath:   # Added imagePath to the company schema
+          type: string
+          description: "The path to the company's image"
+          
+    createCompanyRequest:
+      type: object
+      properties:
+        companyName:
+          type: string
+        industry:
+          type: string
+        description:
+          type: string
+        imagePath:   # Added imagePath to the creation request schema
+          type: string
+          description: "The path to the company's image"
+
+    companyUpdateRequest:
+      type: object
+      properties:
+        companyId:
+          type: integer
+        companyName:
+          type: string
+        industry:
+          type: string
+        description:
+          type: string
+        imagePath:   # Added imagePath to the update request schema
+          type: string
+          description: "The path to the company's image"

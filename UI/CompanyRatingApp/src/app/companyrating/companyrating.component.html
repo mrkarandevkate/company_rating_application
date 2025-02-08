@@ -1,0 +1,93 @@
+<div class="container">
+    <div *ngIf="companyDetails" class="row">
+        <!-- Company Details Section (left side) -->
+        <div class="col-md-5">
+            <div class="card shadow-lg mb-4 rounded">
+                <div class="card-header d-flex bg-primary text-white rounded-top">
+                    <div class="col-md-2 text-center">
+                        <div class="company-initial">
+                            {{ companyDetails.companyName.charAt(0) | uppercase }}
+                        </div>
+                    </div>
+                    <div>
+                        <h2>{{ companyDetails.companyName }}</h2>
+                        <p class="text-muted">{{ companyDetails.industry }}</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Company Overview</h5>
+                    <p class="card-text">{{ companyDetails.description }}</p>
+                    <hr>
+                    <h5 class="card-title">Average Rating</h5>
+                    <div class="star-container">
+                        <div class="star-filled" [ngStyle]="{'width.%': (companyDetails.averageRating / 5) * 100}">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                        </div>
+                        <div class="star">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                        </div>
+                    </div>
+                    <strong class="ml-2">{{ companyDetails.averageRating }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ratings Section (right side) -->
+        <div class="col-md-7">
+            <div class="card shadow-lg mb-4 rounded">
+                <div class="card-body" style="overflow-y: scroll; max-height: 80vh;">
+
+
+                    <h5 class="card-title text-center ">
+                        Reviews</h5>
+
+                    <hr class="my-4">
+                    <div *ngFor="let rating of companyDetails.ratingDetails" class="review-item mb-4">
+                        <div class="d-flex  align-items-center">
+
+                            <div>
+                                <span>{{rating.rating}}</span>&nbsp;
+                            </div>
+
+                            <div class="star-container">
+                                <div class="star-filled" [ngStyle]="{'width.%': (rating.rating / 5) * 100}">
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                </div>
+                                <div class="star">
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                </div>
+                            </div>
+
+                            <div class="ms-auto">
+                                <small class="text-muted">{{ rating.createdAt }}</small>
+                            </div>
+
+
+
+                        </div>
+
+                        <p class="review-comments mt-2">
+                            <i>"{{ rating.comments }}"</i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

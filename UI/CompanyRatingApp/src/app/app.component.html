@@ -1,0 +1,53 @@
+<div class="container-fluid home">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+      <a class="navbar-brand text-white fw-bold" href="#" style="margin-left: 10%;">
+        <img src="assets/logo.png" alt="logo" class="rounded-circle" style="height:50px; width:50px;">
+        RatingHub
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto" style="margin-right:5%;">
+          <li class="nav-item" [ngClass]="{'active': currentPage === 'home'}">
+            <a class="nav-link" routerLink="/" [fragment]="'main'" (click)="setActivePage('home')">Home</a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active': currentPage === 'rating'}">
+            <a class="nav-link" routerLink="/rating" (click)="setActivePage('rating')">
+              Rating
+            </a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active': currentPage === 'job'}">
+            <a class="nav-link" routerLink="/job" (click)="setActivePage('job')">
+              Jobs
+            </a>
+          </li>
+
+          <li class="nav-item" [ngClass]="{'active': currentPage === 'login'}">
+            <a class="nav-link" routerLink="/login" (click)="setActivePage('login')" tabindex="-1"
+              aria-disabled="true">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="container-fluid ">
+    <div class="row">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="container-fluid">
+
+    <footer class="text-white text-center py-3 mt-5">
+      <hr>
+      <p>&copy; 2025 <a href="https://www.firstquadtechsolutions.com" class="text-white" target="_blank">FirstQuaad Tech
+          Solution</a>. All rights reserved.</p>
+      <p>Designed and Developed by <strong><a href="https://www.firstquadtechsolutions.com" class="text-white"
+            target="_blank">FirstQuaad Tech Solution</a></strong></p>
+    </footer>
+  </div>
+</div>

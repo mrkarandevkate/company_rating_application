@@ -1,0 +1,104 @@
+* {
+    right: 0;
+    left: 0;
+}
+
+.admin-dashboard {
+    margin-top: 4%;
+    display: flex;
+    height: 100%;
+    background-color: #85c1e9;
+}
+
+.admin-dashboard .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.admin-dashboard .sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+.admin-dashboard .sidebar .section-title {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.admin-dashboard .sidebar .logo {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    background-color: #34495e;
+}
+
+.admin-dashboard .sidebar .menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-dashboard .sidebar .menu ul li a {
+    display: block;
+    text-align: center;
+    color: #f1c40f;
+    padding: 1rem;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.admin-dashboard .sidebar .menu ul li a:hover,
+.admin-dashboard .sidebar .menu ul li a.active {
+    background-color: #f39c12;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.admin-dashboard .main-content {
+    flex: 1;
+    height: 100%;
+    margin-left: 250px;
+    /* This will be adjusted when sidebar is collapsed */
+    transition: margin-left 0.3s ease;
+    width: calc(100% - 250px);
+    /* Subtract sidebar width */
+}
+
+.admin-dashboard .main-content.collapsed {
+    margin-left: 0;
+    width: 100%;
+    /* Full width when sidebar is collapsed */
+}
+
+.admin-dashboard .main-content .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 0;
+    padding: 1rem;
+    background-color: #ecf0f1;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-dashboard .main-content .navbar .menu-toggle {
+    font-size: 1.5rem;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-dashboard .main-content .navbar .profile {
+    font-weight: bold;
+}
+
+.admin-dashboard .main-content main {
+    padding: 1rem;
+}
