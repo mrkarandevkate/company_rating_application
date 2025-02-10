@@ -25,7 +25,7 @@ import java.io.IOException;
  * LoginResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-02-05T14:36:03.766895818Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-02-10T05:19:44.197839517Z[GMT]")
 
 public class LoginResponse {
   @SerializedName("userId")
@@ -39,6 +39,9 @@ public class LoginResponse {
 
   @SerializedName("password")
   private String password = null;
+
+  @SerializedName("role")
+  private String role = null;
 
   public LoginResponse userId(Integer userId) {
     this.userId = userId;
@@ -112,6 +115,24 @@ public class LoginResponse {
     this.password = password;
   }
 
+  public LoginResponse role(String role) {
+    this.role = role;
+    return this;
+  }
+
+   /**
+   * Get role
+   * @return role
+  **/
+  @Schema(description = "")
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -125,12 +146,13 @@ public class LoginResponse {
     return Objects.equals(this.userId, loginResponse.userId) &&
         Objects.equals(this.name, loginResponse.name) &&
         Objects.equals(this.email, loginResponse.email) &&
-        Objects.equals(this.password, loginResponse.password);
+        Objects.equals(this.password, loginResponse.password) &&
+        Objects.equals(this.role, loginResponse.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, name, email, password);
+    return Objects.hash(userId, name, email, password, role);
   }
 
 
@@ -143,6 +165,7 @@ public class LoginResponse {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();
   }

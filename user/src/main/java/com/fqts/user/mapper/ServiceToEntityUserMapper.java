@@ -84,6 +84,7 @@ public class ServiceToEntityUserMapper {
         loginResponse.setName(user.getName());
         loginResponse.setEmail(user.getEmail());
         loginResponse.setPassword(user.getPassword());
+        loginResponse.setRole(user.getRole());
         return  loginResponse;
     }
 }

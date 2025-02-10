@@ -2,7 +2,7 @@
 
 User Service
 - API version: 1.0.0
-  - Build date: 2025-02-05T14:36:03.766895818Z[GMT]
+  - Build date: 2025-02-10T05:19:44.197839517Z[GMT]
 
 This is the API documentation for the User service from the Rating Service project, which is part of a microservice architecture for ratings.
 

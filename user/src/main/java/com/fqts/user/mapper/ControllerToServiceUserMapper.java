@@ -80,6 +80,7 @@ public class ControllerToServiceUserMapper {
         loginResponse.setEmail(serviceloginRespone.getEmail());
         loginResponse.setName(serviceloginRespone.getName());
         loginResponse.setPassword(serviceloginRespone.getPassword());
+        loginResponse.setRole(serviceloginRespone.getRole());
         return loginResponse;
     }
 }

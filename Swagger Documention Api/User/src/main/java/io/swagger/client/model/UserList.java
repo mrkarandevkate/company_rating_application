@@ -21,7 +21,7 @@ import java.util.List;
  * UserList
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-02-05T14:36:03.766895818Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-02-10T05:19:44.197839517Z[GMT]")
 
 public class UserList extends ArrayList<User> {
 
