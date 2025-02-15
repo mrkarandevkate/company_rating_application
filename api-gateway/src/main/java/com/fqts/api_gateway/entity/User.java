@@ -1,10 +1,18 @@
 package com.fqts.api_gateway.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 
+    @JsonProperty("name")  // Match API response
     private String userName;
+
+    @JsonProperty("email")
     private String userEmail;
+
     private String password;
+
+    @JsonProperty("role")  // Match API response
     private String hasRole;
 
     @Override

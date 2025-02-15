@@ -6,19 +6,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
+import java.util.List;
 
 @Component
 public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
-    Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
+    private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
     private final JwtUtils jwtUtil;
     private final CustomUserDetailsService userService;
 
@@ -28,39 +25,22 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
     }
 
     @Override
-    public Mono<Authentication> authenticate(Authentication authentication) throws AuthenticationException {
+    public Mono<Authentication> authenticate(Authentication authentication) {
         String token = authentication.getCredentials().toString();
         String username = jwtUtil.extractUserName(token);
+        String role = jwtUtil.extractUserRole(token);
 
         return userService.findByUsername(username)
                 .map(userDetails -> {
                     if (jwtUtil.validateToken(token, userDetails.getUsername())) {
-                        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-
+                        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+                        GrantedAuthority authority = new SimpleGrantedAuthority(formattedRole);
                         logger.info("Authenticated user: {}", username);
-                        logger.info("Assigned roles: {}", authorities);
-
-                        // Print each role separately
-                        authorities.forEach(auth -> logger.info("Role: {}", auth.getAuthority()));
-
-                        return new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
-                    } else {
-                        throw new AuthenticationException("Invalid JWT token") {};
+                        logger.info("Assigned role: {}", formattedRole);
+                        return new UsernamePasswordAuthenticationToken(userDetails, token, List.of(authority));
                     }
+                    throw new RuntimeException("Invalid JWT token");
                 });
     }
 
-    public ServerAuthenticationConverter authenticationConverter() {
-        return new ServerAuthenticationConverter() {
-            @Override
-            public Mono<Authentication> convert(ServerWebExchange exchange) {
-                String token = exchange.getRequest().getHeaders().getFirst("Authorization");
-                if (token != null && token.startsWith("Bearer ")) {
-                    token = token.substring(7);
-                    return Mono.just(SecurityContextHolder.getContext().getAuthentication());
-                }
-                return Mono.empty();
-            }
-        };
-    }
 }

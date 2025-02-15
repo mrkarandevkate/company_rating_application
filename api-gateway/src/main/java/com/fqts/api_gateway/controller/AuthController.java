@@ -11,11 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,16 +40,22 @@ public class AuthController {
     @PostMapping("/login")
     public Mono<ResponseEntity<String>> login(@RequestBody AuthRequest authRequest) {
         Logger logger = LoggerFactory.getLogger(getClass());
-        System.out.println("Received email: " + authRequest.getEmail()); // Debugging
+        System.out.println("Received email: " + authRequest.getEmail());
 
         return userDetailsService.findByUsername(authRequest.getEmail())
                 .flatMap(userDetails -> {
                     logger.info("Fetched UserDetails: " + userDetails);
 
                     if (authRequest.getPassword().equals(userDetails.getPassword())) {
-                        String token = jwtUtil.generateToken(authRequest.getEmail()); // Use email
-                        logger.info("Generated token: " + token); // Log generated token
-                        return Mono.just(ResponseEntity.ok(token)); // Return the token
+                        String role = userDetails.getAuthorities().stream()
+                                .findFirst()
+                                .map(GrantedAuthority::getAuthority)
+                                .map(r -> r.startsWith("ROLE_") ? r : "ROLE_" + r)
+                                .orElse("ROLE_USER");
+
+                        String token = jwtUtil.generateToken(authRequest.getEmail(), role);
+                        logger.info("Generated token with role: {}", role);
+                        return Mono.just(ResponseEntity.ok(token));
                     } else {
                         logger.warn("Invalid email or password for user: " + authRequest.getEmail());
                         return Mono.error(new BadCredentialsException("Invalid email or password"));

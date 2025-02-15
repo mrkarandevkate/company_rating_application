@@ -1,17 +1,22 @@
 package com.fqts.api_gateway;
+
 import com.fqts.api_gateway.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
+    @Override
+    public String toString() {
+        return "CustomUserDetails{" +
+                "user=" + user +
+                '}';
+    }
 
-    private final User user; // Use your model
-
-
+    private final User user;
 
     public CustomUserDetails(User user) {
         this.user = user;
@@ -19,7 +24,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getHasRole())); // Single role assignment
+        String role = user.getHasRole();
+        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+        return List.of(new SimpleGrantedAuthority(formattedRole));
     }
 
 
@@ -30,7 +37,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserEmail(); // Use email as the username
+        return user.getUserEmail(); // 👈 Use email as username
     }
 
     @Override
