@@ -23,7 +23,6 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
     }
-
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
         String token = authentication.getCredentials().toString();
@@ -33,10 +32,10 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
         return userService.findByUsername(username)
                 .map(userDetails -> {
                     if (jwtUtil.validateToken(token, userDetails.getUsername())) {
-                        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
-                        GrantedAuthority authority = new SimpleGrantedAuthority(formattedRole);
+
+                        GrantedAuthority authority = new SimpleGrantedAuthority(role);
                         logger.info("Authenticated user: {}", username);
-                        logger.info("Assigned role: {}", formattedRole);
+                        logger.info("Assigned role: {}", role);
                         return new UsernamePasswordAuthenticationToken(userDetails, token, List.of(authority));
                     }
                     throw new RuntimeException("Invalid JWT token");

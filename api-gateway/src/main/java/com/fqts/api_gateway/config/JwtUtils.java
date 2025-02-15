@@ -17,10 +17,9 @@ public class JwtUtils {
     private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
 
     public String generateToken(String userName, String role) {
-        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
         return Jwts.builder()
                 .setSubject(userName)
-                .claim("role", formattedRole)  // Ensure stored role has "ROLE_" prefix
+                .claim("role", role)
                 .signWith(SECRET_KEY)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))

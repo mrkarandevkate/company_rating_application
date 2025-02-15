@@ -3,30 +3,24 @@ package com.fqts.api_gateway.controller;
 import com.fqts.api_gateway.CustomUserDetailsService;
 import com.fqts.api_gateway.config.JwtUtils;
 import com.fqts.api_gateway.entity.AuthRequest;
-import com.fqts.api_gateway.entity.AuthResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
-    @Autowired
-    private ReactiveAuthenticationManager authenticationManager;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -50,8 +44,7 @@ public class AuthController {
                         String role = userDetails.getAuthorities().stream()
                                 .findFirst()
                                 .map(GrantedAuthority::getAuthority)
-                                .map(r -> r.startsWith("ROLE_") ? r : "ROLE_" + r)
-                                .orElse("ROLE_USER");
+                                .orElse("Null");
 
                         String token = jwtUtil.generateToken(authRequest.getEmail(), role);
                         logger.info("Generated token with role: {}", role);
@@ -67,5 +60,6 @@ public class AuthController {
                     return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage()));
                 });
     }
+
 
 }

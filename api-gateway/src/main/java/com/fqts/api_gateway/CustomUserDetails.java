@@ -9,13 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
-    @Override
-    public String toString() {
-        return "CustomUserDetails{" +
-                "user=" + user +
-                '}';
-    }
-
     private final User user;
 
     public CustomUserDetails(User user) {
@@ -24,11 +17,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = user.getHasRole();
-        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
-        return List.of(new SimpleGrantedAuthority(formattedRole));
+        return List.of(new SimpleGrantedAuthority(user.getHasRole()));  // Ensure proper role extraction
     }
-
 
     @Override
     public String getPassword() {
