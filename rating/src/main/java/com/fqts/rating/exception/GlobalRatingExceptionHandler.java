@@ -1,4 +1,4 @@
-package com.fqts.company.exception;
+package com.fqts.rating.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalRatingExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UserNotFoundException ex) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("errorCode", CustomErrorCodes.USER_NOT_FOUND);
+        map.put("error", ex.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(CompanyNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleCompanyNotFoundException(CompanyNotFoundException ex) {
@@ -19,12 +27,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DuplicateCompanyException.class)
-    public ResponseEntity<Map<String, Object>> handleDuplicateCompanyException(DuplicateCompanyException ex) {
+    @ExceptionHandler(RatingNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleRatingNotFoundException(RatingNotFoundException ex) {
         Map<String, Object> map = new HashMap<>();
-        map.put("errorCode", CustomErrorCodes.DUPLICATE_COMPANY);
+        map.put("errorCode", CustomErrorCodes.RATING_NOT_FOUND);
         map.put("error", ex.getMessage());
-        return new ResponseEntity<>(map, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotNullException.class)

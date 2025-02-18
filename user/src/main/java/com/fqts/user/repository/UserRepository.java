@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
    @Query(value="select * from users where role='USER' ", nativeQuery = true)
    List<User>findAllUser();
 
+   boolean existsByEmail(String email);
+
    @Query(value="SELECT * FROM users WHERE email = :email AND status = 'ALLOWED'", nativeQuery = true)
    User findByEmail(@Param("email") String email);
 

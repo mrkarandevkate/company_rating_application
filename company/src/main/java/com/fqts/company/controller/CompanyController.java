@@ -2,6 +2,7 @@ package com.fqts.company.controller;
 import com.fqts.company.controller.model.*;
 import com.fqts.company.mapper.ControllerToServiceCompanyMapper;
 import com.fqts.company.service.CompanyService;
+import com.fqts.company.service.CompanyServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class CompanyController {
 
     @DeleteMapping("/deletecompany/{companyID}")
     public ResponseEntity<String> deleteUser(@PathVariable("companyID") int companyID){
-        companyService.deletCompanyDetails(companyID);
+        companyService.deleteCompanyDetails(companyID);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Company Deleted Successfully");
     }
 }

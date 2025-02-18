@@ -3,12 +3,12 @@ package com.fqts.rating.controller;
 import com.fqts.rating.controller.model.*;
 import com.fqts.rating.mapper.ControllerToServiceRatingMapper;
 import com.fqts.rating.service.RatingService;
+import com.fqts.rating.service.RatingServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

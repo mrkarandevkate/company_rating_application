@@ -4,6 +4,7 @@ import com.fqts.user.controller.model.*;
 import com.fqts.user.exception.UnauthorizedAccessException;
 import com.fqts.user.mapper.ControllerToServiceUserMapper;
 import com.fqts.user.service.UserService;
+import com.fqts.user.service.UserServiceImp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -21,6 +20,7 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+
 
     @PostMapping("/adduser")
     public ResponseEntity<UserIdResponse> addUser(@RequestBody CreateUserRequest createUserRequest){
@@ -46,7 +46,7 @@ public class UserController {
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId){
-        userService.deletUserDetailsbyId(userId);
+        userService.deleteUserDetailsById(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User Deleted Successfully");
     }
 

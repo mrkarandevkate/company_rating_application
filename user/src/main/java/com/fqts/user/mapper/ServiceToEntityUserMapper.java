@@ -1,44 +1,49 @@
 package com.fqts.user.mapper;
-
 import com.fqts.user.entity.User;
-import com.fqts.user.service.UserService;
 import com.fqts.user.service.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
+@Component
 public class ServiceToEntityUserMapper {
+    private  BCryptPasswordEncoder passwordEncoder;
 
-    public static com.fqts.user.entity.User mapCreateUser(CreateUserRequest createUserRequest)
+    public ServiceToEntityUserMapper(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public com.fqts.user.entity.User mapCreateUser(CreateUserRequest createUserRequest)
     {
         com.fqts.user.entity.User userEntity = new com.fqts.user.entity.User();
         userEntity.setName(createUserRequest.getName());
         userEntity.setEmail(createUserRequest.getEmail());
+        String encryptedPassword=passwordEncoder.encode(createUserRequest.getPassword());
         userEntity.setPassword(createUserRequest.getPassword());
         userEntity.setStatus("NOTALLOWED");
         userEntity.setRole("USER");
         return userEntity;
     }
 
-
-    public static com.fqts.user.entity.User mapUpdateUser(UpdateUserRequest updateUserRequest){
+    public com.fqts.user.entity.User mapUpdateUser(UpdateUserRequest updateUserRequest, String password ) {
         com.fqts.user.entity.User userUpdateEntity = new com.fqts.user.entity.User();
         userUpdateEntity.setUserID(updateUserRequest.getUserId());
         userUpdateEntity.setName(updateUserRequest.getName());
         userUpdateEntity.setEmail(updateUserRequest.getEmail());
+        userUpdateEntity.setPassword(password);
         userUpdateEntity.setRole("USER");
-        if(userUpdateEntity.getStatus()=="ALLOWED") {
+        userUpdateEntity.setPassword(userUpdateEntity.getPassword());
+        if ("ALLOWED".equals(userUpdateEntity.getStatus())) {
             userUpdateEntity.setStatus("ALLOWED");
-        }
-        else{
+        } else {
             userUpdateEntity.setStatus("NOTALLOWED");
         }
         return userUpdateEntity;
     }
 
-    public static UserList mapEntityListToServiceUserList(List<User> userListResult) {
+
+    public UserList mapEntityListToServiceUserList(List<User> userListResult) {
         UserList userList = new UserList();
         for(com.fqts.user.entity.User entityUser:userListResult){
             com.fqts.user.service.model.User user = new com.fqts.user.service.model.User();
@@ -52,7 +57,7 @@ public class ServiceToEntityUserMapper {
         return userList;
     }
 
-    public static com.fqts.user.service.model.User mapEntitytoServiceUser(com.fqts.user.entity.User user) {
+    public com.fqts.user.service.model.User mapEntitytoServiceUser(com.fqts.user.entity.User user) {
         com.fqts.user.service.model.User serviceUser = new com.fqts.user.service.model.User();
         serviceUser.setUserId(user.getUserID());
         serviceUser.setName(user.getName());
@@ -62,23 +67,23 @@ public class ServiceToEntityUserMapper {
 
         return serviceUser;
     }
-    public static AdminCountResponse MapAdminCount(int admincount) {
+    public AdminCountResponse MapAdminCount(int admincount) {
         AdminCountResponse adminCountResponse = new AdminCountResponse();
         adminCountResponse.setAdminCount(admincount);
         return  adminCountResponse;
     }
 
-    public static User mapCreateAdmin(CreateUserRequest createUserRequest) {
+    public User mapCreateAdmin(CreateUserRequest createUserRequest) {
         com.fqts.user.entity.User userEntity = new com.fqts.user.entity.User();
         userEntity.setName(createUserRequest.getName());
         userEntity.setEmail(createUserRequest.getEmail());
-        userEntity.setPassword(createUserRequest.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
         userEntity.setStatus("ALLOWED");
         userEntity.setRole("ADMIN");
         return userEntity;
     }
 
-    public static LoginResponse mapLoginReponse(User user) {
+    public LoginResponse mapLoginReponse(User user) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUserId(user.getUserID());
         loginResponse.setName(user.getName());
@@ -87,4 +92,6 @@ public class ServiceToEntityUserMapper {
         loginResponse.setRole(user.getRole());
         return  loginResponse;
     }
+
+
 }

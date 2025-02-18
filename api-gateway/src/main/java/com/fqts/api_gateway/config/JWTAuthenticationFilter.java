@@ -1,5 +1,6 @@
 package com.fqts.api_gateway.config;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,7 +20,7 @@ public class JWTAuthenticationFilter implements WebFilter {
     public JWTAuthenticationFilter(JWTAuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         this.authenticationConverter = exchange -> {
-            String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+            String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             if (token != null && token.startsWith("Bearer ")) {
                 token = token.substring(7);
                 return Mono.just(new UsernamePasswordAuthenticationToken(token, token));

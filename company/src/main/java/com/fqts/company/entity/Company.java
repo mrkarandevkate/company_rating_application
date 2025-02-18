@@ -10,8 +10,11 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int companyId;
+    @Column(unique = true,nullable = false)
     private String companyName;
+    @Column(nullable = false)
     private String industry;
+    @Column(nullable = false)
     private String description;
 
     @Temporal(TemporalType.DATE)

@@ -11,7 +11,11 @@ import org.springframework.security.web.server.authentication.AuthenticationWebF
 
 @Configuration
 public class SecurityConfig {
+    private final JWTAuthenticationManager authenticationManager;
 
+    public SecurityConfig(JWTAuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JWTAuthenticationFilter jwtAuthenticationFilter) {
         return http
@@ -21,12 +25,10 @@ public class SecurityConfig {
                         .pathMatchers("/admin/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
-                .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION) // ✅ Register the filter
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .authenticationManager(authenticationManager)
+                .addFilterBefore(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

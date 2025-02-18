@@ -12,14 +12,14 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
+    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Using a safer secret key
     private static final long EXPIRATION_TIME = 5 * 60 * 1000; // 5 Minutes
-    private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
+    private final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     public String generateToken(String userName, String role) {
         return Jwts.builder()
                 .setSubject(userName)
-                .claim("role", role)
+                .claim("role",  role)  // Add ROLE_ prefix
                 .signWith(SECRET_KEY)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -28,20 +28,26 @@ public class JwtUtils {
 
 
     public String extractUserName(String token) {
-        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public String extractUserRole(String token) {
-        String role = Jwts.parser()
-                .verifyWith(SECRET_KEY)
+        String role = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
                 .build()
-                .parseSignedClaims(token)
-                .getPayload()
+                .parseClaimsJws(token)
+                .getBody()
                 .get("role", String.class);
-        logger.info("Extracted Role from Token: {}", role);
-        return role;
-    }
 
+        logger.info("Extracted Role from Token: {}", role);
+
+        return role.toUpperCase();
+    }
 
     public boolean validateToken(String token, String username) {
         try {
@@ -56,8 +62,14 @@ public class JwtUtils {
         }
     }
 
-
+    // Check if the token is expired
     public boolean isTokenExpired(String token) {
-        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload().getExpiration().after(new Date());
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
     }
 }
