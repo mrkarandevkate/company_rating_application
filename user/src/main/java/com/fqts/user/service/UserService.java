@@ -23,4 +23,6 @@ public interface UserService {
     UserIdResponse addAdmin(CreateUserRequest createUserRequest);
 
     LoginResponse loadUserByUserName(String email);
+
+    UserList getAllAdminDetails();
 }

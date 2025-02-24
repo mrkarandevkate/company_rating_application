@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -17,29 +16,34 @@ import java.util.List;
 public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
     private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
     private final JwtUtils jwtUtil;
-    private final CustomUserDetailsService userService;
+    private final CustomUserDetailsService userDetailsService;
 
-    public JWTAuthenticationManager(JwtUtils jwtUtil, CustomUserDetailsService userService) {
+    public JWTAuthenticationManager(JwtUtils jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.userService = userService;
+        this.userDetailsService = userDetailsService;
     }
+
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
         String token = authentication.getCredentials().toString();
-        String username = jwtUtil.extractUserName(token);
-        String role = jwtUtil.extractUserRole(token);
+        logger.info("Authenticating token: {}", token);
 
-        return userService.findByUsername(username)
+        if (jwtUtil.isTokenExpired(token)) {
+            logger.error("JWT Token is expired.");
+            return Mono.empty();
+        }
+
+        String username = jwtUtil.extractUsername(token);
+        List<SimpleGrantedAuthority> authorities = jwtUtil.extractRoles(token);
+
+        logger.info("Extracted username: {} with roles: {}", username, authorities);
+
+        return userDetailsService.findByUsername(username)
                 .map(userDetails -> {
-                    if (jwtUtil.validateToken(token, userDetails.getUsername())) {
-
-                        GrantedAuthority authority = new SimpleGrantedAuthority(role);
-                        logger.info("Authenticated user: {}", username);
-                        logger.info("Assigned role: {}", role);
-                        return new UsernamePasswordAuthenticationToken(userDetails, token, List.of(authority));
-                    }
-                    throw new RuntimeException("Invalid JWT token");
-                });
+                    logger.info("User authenticated: {}", userDetails.getUsername());
+                    return (Authentication) new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
+                })
+                .doOnError(error -> logger.error("Error authenticating user: {}", error.getMessage()));
     }
 
 }

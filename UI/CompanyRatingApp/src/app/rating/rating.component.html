@@ -1,42 +1,143 @@
-<div class="container">
-    <div *ngFor="let company of companyRatings" class="company-card p-4 shadow-lg rounded">
-        <div class="row align-items-center">
-            <!-- Dynamic Company Initial Container -->
-            <div class="col-md-2 text-center">
-                <div class="company-initial">
-                    {{ company.companyName.charAt(0) | uppercase }}
+<div class="container-fluid container">
+    <!-- Filter Input Field -->
+    <div class="row ratingMain">
+        <div class="col-md-3 addRating">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-center">
+                    <div class="profile-image">
+                        <span *ngIf="!userProfile.photoUrl">{{ getInitials(userProfile.firstName, userProfile.lastName)
+                            }}</span>
+                        <img *ngIf="userProfile.photoUrl" [src]="userProfile.photoUrl" alt="Profile"
+                            class="rounded-circle" />
+                    </div>
+                    <div class="ms-2">
+                        <h6 class="m-0">{{ userProfile.firstName }} {{ userProfile.lastName }}</h6>
+                    </div>
+                </div>
+
+                <div class="card-body d-inline-block" style="min-height: 20vh;">
+                    <div class="text-center mt-5">
+                        <button class="btn btn-primary" (click)="toggleReviewForm()">
+                            Post Review &nbsp;<i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
+                    <!-- Alert message below the button, conditionally displayed -->
+                    <div *ngIf="alertmessage" class="alert-message mt-3">
+                        <span style="color: red;">{{ alertmessage }}</span>
+                    </div>
+                </div>
+
+
+
+                <div class="profile-card"></div>
+                <div class=" container">
+                    <div *ngIf="showReviewForm" class="card mt-3 p-3 " style="border: none;">
+                        <div class="">
+                            <h5 class="text-center">Submit Your Review</h5>
+                        </div>
+                        <div class="card-body">
+                            <form (ngSubmit)="submitReview()">
+                                <div class="mb-3">
+                                    <label for="companySelect" class="form-label">Select Company</label>
+                                    <select id="companySelect" class="form-select" [(ngModel)]="selectedCompanyId"
+                                        name="companyId" required>
+
+                                        <option *ngFor="let company of companies" [value]="company.companyId">
+                                            {{ company.companyName }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rating" class="form-label">Rating</label>
+                                    <div class="star-rating">
+                                        <span *ngFor="let star of stars; let i = index" (click)="setRating(i + 1)"
+                                            (mouseover)="onHover(i + 1)" (mouseleave)="onLeave()" [ngClass]="{
+                                                            'rating-star-filled': i < fullStars || (hoveredRating> 0 && i < hoveredRating), 'rating-star-half-filled' :
+                                                                    (i===fullStars && halfStar) || (hoveredRating> 0 && i === hoveredRating && ratingCount - fullStars >=
+                                                                    0.5),
+                                                                    'rating-star-empty': i >= fullStars + (halfStar ? 1 : 0) && i >= hoveredRating
+                                                                    }" class="rating-star">
+                                            &#9733;
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="comments" class="form-label">Comments</label>
+                                    <textarea id="comments" class="form-control" [(ngModel)]="comments" name="comments"
+                                        rows="4"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit Review</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="col-md-8">
+            <div class="mb-3" id="filter">
+                <div class="input-group">
+                    <input type="text" class="form-control filter-input" placeholder="&#xF52A; Filter by company name"
+                        [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
                 </div>
             </div>
 
-            <!-- Company Details -->
-            <div class="col-md-10">
-                <h4 class="company-name">{{ company.companyName }}</h4>
-                <span class="rating">
-                    <strong>{{ company.averageRating }}</strong>
-                </span>
-                <div class="star-container">
 
-                    <div class="star-filled" [ngStyle]="{'width.%': (company.averageRating / 5) * 100}">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
+            <!-- Company Cards List -->
+            <div *ngFor="let company of filteredCompanyRatings" class="company-card p-4 shadow-lg rounded">
+                <div class="row align-items-center">
+                    <!-- Dynamic Company Initial Container -->
+                    <div class="col-md-2 text-center">
+                        <div class="company-initial">
+                            {{ company.companyName.charAt(0) | uppercase }}
+                        </div>
                     </div>
-                    <div class="star">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
+
+                    <!-- Company Details -->
+                    <div class="col-md-10">
+                        <h4 class="company-name">{{ company.companyName }}</h4>
+                        <span class="rating">
+                            <strong>{{ company.averageRating }}</strong>
+                        </span>
+                        <div class="star-container">
+                            <div class="star-filled" [ngStyle]="{'width.%': (company.averageRating / 5) * 100}">
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                            </div>
+                            <div class="star">
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                            </div>
+                        </div>
+
+                        <p class="company-description">{{ company.description }}</p>
+
+                        <!-- For Logged-in users, show View Details button -->
+                        <button *ngIf="authService.isLoggedIn()" class="btn btn-primary btn-sm mt-2"
+                            (click)="viewCompanyDetails(company.companyId)">
+                            View Details
+                        </button>
+
+                        <!-- For Non-logged-in users, show a message or button to login first -->
+                        <div *ngIf="!authService.isLoggedIn()" class="mt-2">
+                            <br>
+                            <button class="btn btn-secondary btn-sm mt-2" (click)="viewDetails()">
+                                View Details
+                            </button>
+                        </div>
+
                     </div>
                 </div>
-
-                <p class="company-description">{{ company.description }}</p>
-
-                <button class="btn btn-primary btn-sm mt-2" (click)="viewCompanyDetails(company.companyId)">
-                    View Details
-                </button>
             </div>
         </div>
     </div>

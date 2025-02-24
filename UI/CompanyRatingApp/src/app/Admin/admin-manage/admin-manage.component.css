@@ -1,0 +1,15 @@
+.table-container {
+    min-height: 100vh;
+}
+
+h2 {
+
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+}

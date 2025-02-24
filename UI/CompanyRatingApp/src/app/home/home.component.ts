@@ -12,11 +12,9 @@ export class HomeComponent implements AfterViewInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngAfterViewInit() {
-    // Listen for route changes and handle fragment
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      // Scroll to the fragment
       const fragment = this.activatedRoute.snapshot.fragment;
       if (fragment) {
         const element = document.getElementById(fragment);

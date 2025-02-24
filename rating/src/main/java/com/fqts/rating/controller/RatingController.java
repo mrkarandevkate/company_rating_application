@@ -36,7 +36,7 @@ public class RatingController {
         com.fqts.rating.service.model.CompanyRatingResponse serviceCompanyRatingResponse=ratingService.getRatingByCompanyId(companyId);
         CompanyRatingResponse companyRatingResponse = ControllerToServiceRatingMapper.mapServiceToControllerCompanyRatingResponse(serviceCompanyRatingResponse);
         return companyRatingResponse;
-    }
+    }   
 
     @GetMapping("/getcompanyaveragerating")
     public CompanyAverageRatingList getRatingsForAllCompanies() {

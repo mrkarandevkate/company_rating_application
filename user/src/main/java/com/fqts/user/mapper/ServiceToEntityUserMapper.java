@@ -20,7 +20,7 @@ public class ServiceToEntityUserMapper {
         userEntity.setName(createUserRequest.getName());
         userEntity.setEmail(createUserRequest.getEmail());
         String encryptedPassword=passwordEncoder.encode(createUserRequest.getPassword());
-        userEntity.setPassword(createUserRequest.getPassword());
+        userEntity.setPassword(encryptedPassword);
         userEntity.setStatus("NOTALLOWED");
         userEntity.setRole("USER");
         return userEntity;

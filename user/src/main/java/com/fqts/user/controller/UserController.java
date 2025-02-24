@@ -56,15 +56,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Password Updated Successfully");
     }
 
-//    @PutMapping("/auth/access-control/{userId}")
-//    public ResponseEntity<String> setStatus(@PathVariable("userId") int userId) {
-//        boolean statusChanged = userService.setStatus(userId);
-//        if (statusChanged) {
-//            return ResponseEntity.ok("User has been granted access");
-//        } else {
-//            return ResponseEntity.ok("Student's access has been revoked");
-//        }
-//    }
 
     @GetMapping("/loaduser/{email}")
     public ResponseEntity<LoginResponse>loadByUser(@PathVariable("email") String email ){

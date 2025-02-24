@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
 
-    @JsonProperty("name")  // Match API response
+    @JsonProperty("name")
     private String userName;
 
     @JsonProperty("email")
@@ -12,7 +12,7 @@ public class User {
 
     private String password;
 
-    @JsonProperty("role")  // Match API response
+    @JsonProperty("role")
     private String hasRole;
 
     @Override
@@ -66,4 +66,5 @@ public class User {
     public void setHasRole(String hasRole) {
         this.hasRole = hasRole;
     }
+// Getters and Setters
 }

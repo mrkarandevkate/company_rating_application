@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './jobs.component.css'
 })
 export class JobsComponent {
+  currentPage: string = 'jobs';
 
+  setActivePage(page: string): void {
+    this.currentPage = page;
+  }
 }

@@ -1,23 +1,53 @@
-.home {
-    margin-top: 0;
-    /* Same as navbar height */
-
-    padding-top: 2px;
-    /* Optional: Adds spacing between navbar and content */
+/* Global Styles */
+body {
+    background: linear-gradient(45deg, #f6d365, #fda085);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+.home {
+    margin-top: 0;
+    padding-top: 2px;
+}
+
+/* Navbar Styling */
 .navbar {
     position: fixed;
+    background: rgba(0, 0, 0, 0.6);
+    /* Gradient background */
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 1000;
     height: 70px;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    /* Added border */
 }
+
+.navbar-collapsed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.navbar.scrolled {
+    background-color: #ffffff;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .nav-link,
+.navbar .nav-item a {
+    transition: color 0.5s ease;
+    color: #fff;
+}
+
+
 
 .navbar-nav .nav-item {
     font-size: 1rem;
     font-weight: 700;
+    transition: transform 0.3s ease;
 }
 
 .navbar-nav .nav-item a {
@@ -34,17 +64,52 @@
     font-weight: bold;
 }
 
-footer {
+/* Button Styling */
+.navbar-nav .nav-item button {
+    background-color: #62fb40;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
 
-    color: #000000 !important;
+.navbar-nav .nav-item button:hover {
+    background-color: #4caf50;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
 }
 
 footer a {
-    color: #040000 !important;
+    color: #62fb40 !important;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 footer a:hover {
     color: #A8E10C;
+}
+
+/* Add some padding for router-outlet content */
+.router-outlet {
+    padding-top: 80px;
+    padding-bottom: 50px;
+}
+
+/* Hover effects */
+.navbar-nav .nav-item:hover {
+    transform: translateY(-3px);
+}
+
+.navbar-toggler-icon {
+    background-color: #62fb40;
+}
+
+.navbar-toggler {
+    border: none;
 }

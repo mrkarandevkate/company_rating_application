@@ -17,9 +17,9 @@ public class ApiGatewayApplication {
 //	}
 
 	@Bean
-	public WebClient webClient() {
-		return WebClient.builder()
-				.baseUrl("http://localhost:8095/")  // Set the base URL for your requests
+	public WebClient webClient(WebClient.Builder builder) {
+		return builder.baseUrl("http://localhost:8080/") // Replace with actual user service URL
+				.defaultHeader("Content-Type", "application/json")
 				.build();
 	}
 	public static void main(String[] args) {

@@ -1,6 +1,20 @@
 /* Reduce the width of the description column */
 
 
+.table-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    min-height: 80vh;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
 th,
 td {

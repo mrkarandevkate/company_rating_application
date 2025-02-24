@@ -1,7 +1,17 @@
 <div class="table-container">
-    <button class="btn btn-primary mb-3" (click)="isAddingCompany = true; isUpdatingCompany = false; resetForm();">
-        Add Company
-    </button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2>Company</h2>
+        </div>
+        <div class="ml-auto">
+            <button class="btn btn-primary mb-3"
+                (click)="isAddingCompany = true; isUpdatingCompany = false; resetForm();">
+                Add Company
+            </button>
+        </div>
+    </div>
+
+
 
     <div *ngIf="isAddingCompany" class="card p-3 mb-3">
         <h5>{{ isUpdatingCompany ? 'Update Company' : 'Add Company' }}</h5>

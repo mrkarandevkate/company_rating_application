@@ -25,12 +25,11 @@ public class CustomUserDetailsService implements ReactiveUserDetailsService {
                 .retrieve()
                 .bodyToMono(User.class)
                 .doOnNext(user -> logger.info("Fetched User from API: {}", user))
-                .map(user -> (UserDetails) new CustomUserDetails(user)) // ✅ Explicit Cast
+                .map(user -> (UserDetails) new CustomUserDetails(user)) // Explicit Cast
                 .doOnSuccess(userDetails -> logger.info("Mapped UserDetails: {}", userDetails))
                 .onErrorResume(e -> {
                     logger.error("Error fetching user: {}", e.getMessage());
                     return Mono.error(new RuntimeException("User service is unavailable", e));
                 });
     }
-
 }

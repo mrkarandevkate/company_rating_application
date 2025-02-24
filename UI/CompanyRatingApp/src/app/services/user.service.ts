@@ -7,13 +7,21 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 })
 export class UserService {
 
-  private userapiUrl = `http://localhost:8080/user`; // URL to fetch all users
   private adminapiUrl = `http://localhost:8080/admin`; // URL to fetch all users
 
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<any[]> {
     return this.http.get<any[]>(this.adminapiUrl + "/getalluser");
+  }
+
+  deleteAdmin(userId: number): Observable<any[]> {
+    return this.http.delete<any[]>(`http://localhost:8080/user/delete/${userId}`);
+  }
+
+
+  getAllAdmin(): Observable<any[]> {
+    return this.http.get<any[]>(this.adminapiUrl + "/getalladmin");
   }
 
   activateUser(userId: any): Observable<any> {

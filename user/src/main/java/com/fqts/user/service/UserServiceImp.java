@@ -110,7 +110,7 @@ public UserIdResponse updateUser(UpdateUserRequest updateUserRequest) {
             throw new NotNullException("Password cannot be null or empty");
         }
         com.fqts.user.entity.User user = userRepository.findByEmail(updatePassword.getEmail());
-        if(user.getPassword().equals(updatePassword.getPassword())){
+        if(user.getPassword().equals(passwordEncoder.encode(updatePassword.getPassword()))){
             throw new IdenticalPasswordException("The new password cannot be the same as the old password.");
         }
         if (user == null) {
@@ -157,5 +157,15 @@ public UserIdResponse updateUser(UpdateUserRequest updateUserRequest) {
             throw new UnauthorizedAccessException("User's access has been revoked for this " + email+"or user not found.");
         }
         return serviceToEntityUserMapper.mapLoginReponse(user);
+    }
+
+    @Override
+    public UserList getAllAdminDetails() {
+        try {
+            List<com.fqts.user.entity.User> userListResult = userRepository.findAllAdmin();
+            return serviceToEntityUserMapper.mapEntityListToServiceUserList(userListResult);
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while fetching the users", e);
+        }
     }
 }

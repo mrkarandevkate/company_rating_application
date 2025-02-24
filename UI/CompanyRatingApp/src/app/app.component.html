@@ -1,6 +1,7 @@
 <div class="container-fluid home">
   <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <nav class="navbar navbar-expand-lg navbar-light" [ngClass]="{'scrolled': navbarScrolled}"
+      *ngIf="!shouldHideFooter()">
       <a class="navbar-brand text-white fw-bold" href="#" style="margin-left: 10%;">
         <img src="assets/logo.png" alt="logo" class="rounded-circle" style="height:50px; width:50px;">
         RatingHub
@@ -17,37 +18,38 @@
             <a class="nav-link" routerLink="/" [fragment]="'main'" (click)="setActivePage('home')">Home</a>
           </li>
           <li class="nav-item" [ngClass]="{'active': currentPage === 'rating'}">
-            <a class="nav-link" routerLink="/rating" (click)="setActivePage('rating')">
-              Rating
-            </a>
+            <a class="nav-link" routerLink="/rating" (click)="setActivePage('rating')">Rating</a>
           </li>
           <li class="nav-item" [ngClass]="{'active': currentPage === 'job'}">
-            <a class="nav-link" routerLink="/job" (click)="setActivePage('job')">
-              Jobs
-            </a>
+            <a class="nav-link" routerLink="/job" (click)="setActivePage('job')">Jobs</a>
           </li>
 
-          <li class="nav-item" [ngClass]="{'active': currentPage === 'login'}">
+          <li class="nav-item" *ngIf="!authService.isLoggedIn()">
             <a class="nav-link" routerLink="/login" (click)="setActivePage('login')" tabindex="-1"
               aria-disabled="true">Login</a>
+          </li>
+          &nbsp;
+          <li class="nav-item" *ngIf="authService.isLoggedIn() && userRole === 'USER'">
+            <button class="btn btn-danger bi bi-box-arrow-right" (click)="logout()"></button>
           </li>
         </ul>
       </div>
     </nav>
   </div>
-  <div class="container-fluid ">
+
+  <div class="container-fluid">
     <div class="row">
       <router-outlet></router-outlet>
     </div>
   </div>
-  <div class="container-fluid">
 
-    <footer class="text-white text-center py-3 mt-5">
+  <div class="container-fluid">
+    <footer class="text-white text-center py-3 mt-5" *ngIf="!shouldHideFooter()">
       <hr>
       <p>&copy; 2025 <a href="https://www.firstquadtechsolutions.com" class="text-white" target="_blank">FirstQuaad Tech
           Solution</a>. All rights reserved.</p>
       <p>Designed and Developed by <strong><a href="https://www.firstquadtechsolutions.com" class="text-white"
-            target="_blank">FirstQuaad Tech Solution</a></strong></p>
+            target="_blank">FirstQuad Tech Solution</a></strong></p>
     </footer>
   </div>
 </div>

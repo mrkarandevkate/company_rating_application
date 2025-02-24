@@ -24,7 +24,7 @@ export class AdminUserComponent implements OnInit {
     this.loading = true;
     this.userService.getAllUsers().subscribe(
       (response: any[]) => {
-        this.users = response;  // Assigning the response directly
+        this.users = response;
         this.loading = false;
       },
       (error: any) => {

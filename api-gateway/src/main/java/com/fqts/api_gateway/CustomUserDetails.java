@@ -2,9 +2,7 @@ package com.fqts.api_gateway;
 
 import com.fqts.api_gateway.entity.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -25,8 +23,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getHasRole()));
+        return List.of(() -> user.getHasRole()); // Directly use the role from the user entity
     }
+
 
     @Override
     public String getPassword() {
@@ -35,7 +34,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserEmail(); // 👈 Use email as username
+        return user.getUserName();
     }
 
     @Override

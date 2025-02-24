@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CompanyRatingService } from '../../services/company-rating.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -10,13 +11,19 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.css'
 })
-export class AdminHomeComponent {
+export class AdminHomeComponent implements OnInit {
   sidebarCollapsed = false;
+  username: string = '';
 
   constructor(
-    public CompanyRatingService: CompanyRatingService,
-    private router: Router
+    private companyRatingService: CompanyRatingService,
+    private router: Router,
+    private authService: AuthService,
   ) { }
+
+  ngOnInit(): void {
+    this.getUserName();
+  }
 
 
   toggleSidebar(): void {
@@ -28,21 +35,15 @@ export class AdminHomeComponent {
       mainContent.classList.toggle('collapsed', this.sidebarCollapsed);
     }
   }
+  getUserName(): void {
+    const token = this.authService.getToken();
+    if (token) {
+      this.username = this.authService.getUserNameFromToken(token);
+    }
+  }
 
-
-  // get userType(): any {
-  //   if (localStorage.getItem('isAdminLoggedIn')) {
-  //     return 'Admin';
-  //   }
-
-  // }
-
-  // isLoggedIn(): boolean {
-  //   return this.CompanyRatingService.isAuthenticated();
-  // }
-
-  logout(): void {
-    this.CompanyRatingService.logout();
+  logout() {
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

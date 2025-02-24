@@ -27,6 +27,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(ControllerToServiceUserMapper.mapServiceToControllerUserList(serviceUserList));
     }
 
+    @GetMapping("/getalladmin")
+    public ResponseEntity<UserList> getAllAdmin(){
+        com.fqts.user.service.model.UserList serviceUserList = userService.getAllAdminDetails();
+        return ResponseEntity.status(HttpStatus.OK).body(ControllerToServiceUserMapper.mapServiceToControllerUserList(serviceUserList));
+    }
+
     @PostMapping("/addadmin")
     public ResponseEntity<UserIdResponse> addAdmin(CreateUserRequest createUserRequest){
         com.fqts.user.service.model.UserIdResponse serviceUserIdResponse = userService.addAdmin(ControllerToServiceUserMapper.mapAdminUser(createUserRequest));
