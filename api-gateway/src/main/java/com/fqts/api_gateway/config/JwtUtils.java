@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtils {
-    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Replace with a secure key
+    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationManager.class);
 
     public String generateToken(String username, String role) {
@@ -31,13 +31,14 @@ public class JwtUtils {
                 .setSubject(username)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours validity
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractToken(ServerHttpRequest request) {
-        return request.getHeaders().getFirst("Authorization") != null && request.getHeaders().getFirst("Authorization").startsWith("Bearer ")
+        return request.getHeaders().getFirst("Authorization") != null &&
+                request.getHeaders().getFirst("Authorization").startsWith("Bearer ")
                 ? request.getHeaders().getFirst("Authorization").substring(7) : null;
     }
 
@@ -71,7 +72,6 @@ public class JwtUtils {
 
         String role = claims.get("role", String.class);
         logger.debug("Extracted role: {}", role);
-        // Use role directly from the database without adding "ROLE_" prefix
         return role != null
                 ? Collections.singletonList(new SimpleGrantedAuthority(role))
                 : Collections.emptyList();

@@ -1,5 +1,7 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
 
   constructor() { }
+
 
 
   setToken(token: string): void {
@@ -29,6 +32,7 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+    // return true;
   }
 
   logout(): void {

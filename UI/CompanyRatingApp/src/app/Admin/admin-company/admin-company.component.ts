@@ -16,7 +16,7 @@ export class AdminCompanyComponent implements OnInit {
   loading: boolean = false;
 
   newCompany = {
-    companyId: 0,  // Added companyId for update
+    companyId: 0,
     companyName: '',
     industry: '',
     description: ''
@@ -71,8 +71,6 @@ export class AdminCompanyComponent implements OnInit {
   editCompany(company: any): void {
     this.isAddingCompany = true;
     this.isUpdatingCompany = true;
-
-
     this.newCompany = { ...company };
   }
 
@@ -84,6 +82,7 @@ export class AdminCompanyComponent implements OnInit {
     this.loading = true;
     this.companyService.updateCompany(this.newCompany).subscribe(
       (response: any) => {
+        console.log(response);
         this.loading = false;
         alert("Company Updated Successfully");
         this.isAddingCompany = false;

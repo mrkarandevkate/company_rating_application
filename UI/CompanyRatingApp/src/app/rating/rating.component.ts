@@ -47,6 +47,7 @@ export class RatingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.companyRatingService.getCompanyRatings().subscribe((data) => {
       this.companyRatings = data;
       this.filteredCompanyRatings = data;
@@ -67,8 +68,8 @@ export class RatingComponent implements OnInit {
   }
 
   setStars(ratingCount: number): void {
-    this.fullStars = Math.floor(ratingCount); // Full stars
-    this.halfStar = ratingCount % 1 >= 0.5; // Check if there's a half star
+    this.fullStars = Math.floor(ratingCount);
+    this.halfStar = ratingCount % 1 >= 0.5;
   }
 
   setRating(star: number): void {

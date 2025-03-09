@@ -38,7 +38,7 @@ export class AdminUserComponent implements OnInit {
     this.loading = true;
     this.userService.activateUser(userId).subscribe(
       (response: any) => {
-        console.log('Response:', response); // Log response
+        console.log('Response:', response);
         this.fetchUsers();
         this.loading = false;
         alert(response.message); // Display response message

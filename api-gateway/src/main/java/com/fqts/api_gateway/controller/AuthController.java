@@ -1,5 +1,6 @@
 package com.fqts.api_gateway.controller;
 
+import com.fqts.api_gateway.CustomUserDetails;
 import com.fqts.api_gateway.CustomUserDetailsService;
 import com.fqts.api_gateway.config.JwtUtils;
 import com.fqts.api_gateway.entity.AuthRequest;
@@ -22,7 +23,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -32,8 +32,8 @@ public class AuthController {
     @Autowired
     private JwtUtils jwtUtil;
 
-@Autowired
-PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public Mono<ResponseEntity<Map<String, String>>> login(@RequestBody AuthRequest authRequest) {
@@ -44,16 +44,19 @@ PasswordEncoder passwordEncoder;
                 .flatMap(userDetails -> {
                     logger.info("Fetched UserDetails: " + userDetails);
 
-                    // ✅ Correct way to compare passwords
+                    if (userDetails == null) {
+                        logger.warn("User not found: " + authRequest.getEmail());
+                        return Mono.error(new BadCredentialsException("Your Access has been Revoked kindly check with admin"));
+                    }
+
+
                     if (passwordEncoder.matches(authRequest.getPassword(), userDetails.getPassword())) {
                         String role = userDetails.getAuthorities().stream()
                                 .findFirst()
                                 .map(GrantedAuthority::getAuthority)
                                 .orElse("Null");
-
                         String token = jwtUtil.generateToken(authRequest.getEmail(), role);
                         logger.info("Generated token with role: {}", role);
-
                         Map<String, String> responseBody = new HashMap<>();
                         responseBody.put("token", token);
                         return Mono.just(ResponseEntity.ok(responseBody));

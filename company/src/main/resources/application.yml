@@ -18,6 +18,16 @@ spring:
     username: postgres
     password: admin
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+#  docker:
+#    compose:
+#      enabled: true
+
+
 
 
 

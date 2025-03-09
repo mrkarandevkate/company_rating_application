@@ -1,6 +1,7 @@
 target/
 
 Swagger Documentation Api/
+.idea/
 
 pom.xml.tag
 pom.xml.releaseBackup

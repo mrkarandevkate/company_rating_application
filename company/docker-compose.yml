@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  company-db:
+    image: postgres:latest
+    container_name: company-db
+    environment:
+      POSTGRES_DB: companydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mysecurepasswordwas
+    ports:
+      - "5435:5432"

@@ -29,14 +29,16 @@ export class AppComponent implements OnInit {
 
   shouldHideFooter(): boolean {
     const currentUrl = this.router.url;
-    return currentUrl.startsWith('/admin-home');
+    return currentUrl.startsWith('/admin') || currentUrl.startsWith('/user');
   }
+
   checkRole() {
     const token = this.authService.getToken();
     if (token) {
       this.userRole = this.authService.getRoleFromToken(token);
     }
   }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

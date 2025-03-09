@@ -7,6 +7,8 @@ import com.fqts.company.mapper.ServiceToEntityCompanyMapper;
 import com.fqts.company.service.model.CompanyIdResponse;
 import com.fqts.company.repository.CompanyRepository;
 import com.fqts.company.service.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Service
 public class CompanyServiceImp implements CompanyService {
 
+    private static final Logger log = LoggerFactory.getLogger(CompanyServiceImp.class);
     @Autowired
     CompanyRepository companyRepository;
 
@@ -50,7 +53,6 @@ public class CompanyServiceImp implements CompanyService {
 
     public CompanyIdResponse updateCompanyDetails(CompanyUpdateRequest companyUpdateRequest) {
         try {
-            // Check if any required fields are null
             if (companyUpdateRequest.getCompanyName() == null || companyUpdateRequest.getCompanyName().isEmpty()) {
                 throw new NotNullException("Company name cannot be null or empty");
             }
@@ -63,7 +65,7 @@ public class CompanyServiceImp implements CompanyService {
 
             com.fqts.company.entity.Company existingCompany = companyRepository.findById(companyUpdateRequest.getCompanyId())
                     .orElseThrow(() -> new CompanyNotFoundException("Company with ID " + companyUpdateRequest.getCompanyId() + " not found"));
-
+            log.info("Updating company with details: {}", existingCompany);
             com.fqts.company.entity.Company savedEntity = companyRepository.save(ServiceToEntityCompanyMapper.mapUpdateCompany(companyUpdateRequest));
             return new CompanyIdResponse().companyId(savedEntity.getCompanyId());
 

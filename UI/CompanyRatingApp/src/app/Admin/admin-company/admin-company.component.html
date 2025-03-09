@@ -10,9 +10,6 @@
             </button>
         </div>
     </div>
-
-
-
     <div *ngIf="isAddingCompany" class="card p-3 mb-3">
         <h5>{{ isUpdatingCompany ? 'Update Company' : 'Add Company' }}</h5>
         <form (submit)="isUpdatingCompany ? updateCompany() : addCompany()">

@@ -10,17 +10,24 @@ import { AdminCompanyComponent } from './Admin/admin-company/admin-company.compo
 import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 import { AdminManageComponent } from './Admin/admin-manage/admin-manage.component';
 import { roleGuard } from './auth/role.guard';
+import { redirectGuard } from './auth/redirect.guard';
+import { UserratingComponent } from './User/userrating/userrating.component';
+import { userRoleGuard } from './auth/user-role.guard';
+import { UserhomeComponent } from './User/userhome/userhome.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'rating', component: RatingComponent },
-    { path: 'company/:id', component: CompanyratingComponent },
-    { path: 'job', component: JobsComponent },
-    { path: 'login', component: LoginComponent },
-
-
+    { path: '', component: HomeComponent, canActivate: [redirectGuard] },
+    { path: 'rating', component: RatingComponent, canActivate: [redirectGuard] },
+    { path: 'company/:id', component: CompanyratingComponent, canActivate: [redirectGuard] },
+    { path: 'job', component: JobsComponent, canActivate: [redirectGuard] },
+    { path: 'login', component: LoginComponent, canActivate: [redirectGuard] },
     {
-        path: 'admin-home', component: AdminHomeComponent, canActivate: [roleGuard], children:
+        path: 'user', component: UserhomeComponent, canActivate: [userRoleGuard], children: [
+            { path: '', component: UserratingComponent }
+        ]
+    },
+    {
+        path: 'admin', component: AdminHomeComponent, canActivate: [roleGuard], children:
             [
                 { path: '', component: DashboardComponent },
                 { path: 'admin-dashboard', component: DashboardComponent },

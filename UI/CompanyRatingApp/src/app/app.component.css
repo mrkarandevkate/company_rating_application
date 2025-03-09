@@ -1,39 +1,44 @@
-/* Global Styles */
 body {
-    background: linear-gradient(45deg, #f6d365, #fda085);
     font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
-.home {
-    margin-top: 0;
-    padding-top: 2px;
-}
 
 /* Navbar Styling */
 .navbar {
     position: fixed;
     background: rgba(0, 0, 0, 0.6);
-    /* Gradient background */
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     height: 70px;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    transition: background-color 0.1s ease, box-shadow 0.5s ease;
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    /* Added border */
 }
 
-.navbar-collapsed {
-    background: rgba(0, 0, 0, 0.6);
+.navbar-brand .text1 {
+    color: white !important;
+}
+
+@media (max-width: 768px) {
+    .navbar-collapse.collapse {
+        background: rgba(0, 0, 0, 0.6) !important;
+        transition: none !important;
+    }
 }
 
 .navbar.scrolled {
     background-color: #ffffff;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar.scrolled .text1 {
+    color: black !important;
+}
+
+.navbar.scrolled .nav-item a {
+    color: black !important;
 }
 
 .navbar .nav-link,

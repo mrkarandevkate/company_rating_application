@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,14 +14,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginData = { email: '', password: '' }; // Your login data model
+  constructor(private userService: UserService, private http: HttpClient, private authService: AuthService, private router: Router) { }
+
+  currentPage: string = 'login';
+
+  setActivePage(page: string): void {
+    this.currentPage = page;
+  }
   errorMessage: string = '';
+  showPassword = false;
+  isFlipped = false;
+  loginData = {
+    email: '',
+    password: ''
+  };
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) { }
-
-
+  registerData = {
+    name: '',
+    email: '',
+    password: ''
+  };
+  toggleForm() {
+    this.isFlipped = !this.isFlipped;
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
   login() {
-    console.log(this.loginData);
     this.http.post<any>('http://localhost:8095/auth/login', this.loginData)
       .subscribe({
         next: (response) => {
@@ -28,26 +48,37 @@ export class LoginComponent {
           if (token) {
             this.authService.setToken(token);
             console.log('Login successful', response);
+
             try {
               const decodedToken: any = jwtDecode(token);
               const userRole = decodedToken.role;
-              if (userRole === 'ADMIN') {
-                this.router.navigate(['/admin-home']);
-              } else {
-                this.router.navigate(['/home']);
-              }
+              let redirectUrl = userRole === 'ADMIN' ? '/admin-home' : '/';
+
+              this.router.navigate([redirectUrl]).then(() => {
+                window.location.reload();
+              });
+
             } catch (error) {
               console.error('Error decoding token', error);
             }
           } else {
             this.errorMessage = 'Token not received from server';
-            console.error('Login failed, no token in response', response);
           }
         },
-        error: (error) => {
+        error: () => {
           this.errorMessage = 'Invalid email or password';
-          console.error('Login failed', error);
         }
       });
+  }
+  register() {
+    this.userService.registerUser(this.registerData).subscribe({
+      next: (response) => {
+        alert("Registration successful!, check your email before login")
+        this.registerData = { name: '', email: '', password: '' };
+      },
+      error: (error) => {
+        this.errorMessage = 'Registration failed!';
+      }
+    });
   }
 }

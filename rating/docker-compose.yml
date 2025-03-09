@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  rating-db:
+    image: postgres:latest
+    container_name: rating-db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mysecurepassword
+      POSTGRES_DB: ratingdb
+    ports:
+      - "5434:5432"

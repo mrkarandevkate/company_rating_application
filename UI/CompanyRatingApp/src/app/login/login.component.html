@@ -1,15 +1,67 @@
-<div class="login-container">
-    <h2>Login</h2>
-    <form (ngSubmit)="login()">
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" [(ngModel)]="loginData.email" name="email" required />
+<div class="body">
+    <div class="login-register-container" [ngClass]="{ 'flipped': isFlipped }">
+        <!-- Login Form -->
+        <div class="login-container login-form">
+            <h2>Login</h2>
+            <form (ngSubmit)="login()">
+                <div class="input-group">
+                    <input class="inputtext" type="email" id="email" [(ngModel)]="loginData.email" name="email" required
+                        placeholder="Enter Your Email" />
+                </div>
+                <div class="input-group">
+                    <div class="password-wrapper" style="position: relative;">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password"
+                            [(ngModel)]="loginData.password" name="password" required placeholder="Enter Your Password"
+                            style="width: 100%; padding-right: 40px;" />
+                        <span class="toggle-password" (click)="togglePasswordVisibility()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                            <i [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <button type="submit">Login</button>
+                <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+                <div class="separator">
+                    <span>------------------ or ------------------</span>
+                </div>
+                <p class="register-text">Not having an account?</p>
+                <button type="button" class="register-button" (click)="toggleForm()">Register</button>
+            </form>
         </div>
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" [(ngModel)]="loginData.password" name="password" required />
+
+        <!-- Register Form -->
+        <div class="login-container register-form">
+            <h2>Register</h2>
+            <form (ngSubmit)="register()">
+                <div class="input-group">
+                    <input class="inputtext" type="text" id="name" [(ngModel)]="registerData.name" name="name" required
+                        placeholder="Enter Your Full Name" />
+                </div>
+                <div class="input-group">
+                    <input class="inputtext" type="email" id="reg-email" [(ngModel)]="registerData.email"
+                        name="reg-email" required placeholder="Enter Your Email" />
+                </div>
+                <div class="input-group">
+                    <div class="password-wrapper" style="position: relative;">
+                        <input [type]="showPassword ? 'text' : 'password'" id="reg-password"
+                            [(ngModel)]="registerData.password" name="reg-password" required
+                            placeholder="Enter Your Password" style="width: 100%; padding-right: 40px;" />
+                        <span class="toggle-password" (click)="togglePasswordVisibility()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                            <i [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <button type="submit">Register</button>
+                <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+                <div class="separator">
+                    <span>------------------ or ------------------</span>
+                </div>
+                <p class="register-text">Already have an account?</p>
+                <button type="button" class="register-button" (click)="toggleForm()">Login</button>
+            </form>
         </div>
-        <button type="submit">Login</button>
-        <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    </form>
+    </div>
 </div>

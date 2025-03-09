@@ -2,7 +2,6 @@ import { CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { jwtDecode } from 'jwt-decode';
 
 export const roleGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -20,10 +19,8 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
     if (userRole === 'ADMIN') {
       return true;
-    } else if (userRole === 'USER') {
-      return true;
     } else {
-      router.navigate(['/login']);
+      router.navigate(['/']);
       return false;
     }
   } catch (error) {

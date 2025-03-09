@@ -1,0 +1,30 @@
+<div class="cotainer">
+    <div class="user-dashboard">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>User Menu</h2>
+            </div>
+            <nav class="menu">
+                <ul>
+
+                    <li><a routerLink="/user" routerLinkActive="active">Rating</a></li>
+                    <li><a routerLink="/user/user-password" routerLinkActive="active">Update Password</a></li>
+                </ul>
+                <hr>
+                <ul class="logout">
+                    <li><a (click)="logout()" class="fw-5"><b>Logout</b>&nbsp; <i class="bi bi-box-arrow-right"></i></a>
+                    </li>
+                </ul>
+
+
+
+            </nav>
+        </aside>
+        <div class="main-content ">
+            <main class="mainRouter">
+                <router-outlet></router-outlet>
+            </main>
+        </div>
+    </div>
+
+</div>
